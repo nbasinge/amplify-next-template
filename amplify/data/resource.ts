@@ -10,6 +10,7 @@ const schema = a.schema({
   Todo: a
     .model({
       content: a.string(),
+      interpretation: a.string()
     })
     .authorization((allow) => [allow.publicApiKey()]),
 });
