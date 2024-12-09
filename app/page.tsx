@@ -56,7 +56,7 @@ export default function App() {
     <main>
       <div style={{ display: "flex" }}>
         <div style={{ flex: 1, padding: "10px" }}>
-          <h2>Happy Emoji</h2>
+          <h1>Happy Emoji</h1>
           <div className="container">
             <div className="scrollbox" ref={(el) => { if (el) el.scrollTop = el.scrollHeight; }}>
               <ul>
@@ -80,13 +80,17 @@ export default function App() {
                 }
               }}
             />
-            <div className="emoji-keyboard">
+            <div className="emoji-keyboard" style={{"overflowY": 'auto', border: "1px solid #ccc", height: "50px", margin: '15px'}}>
               {["😀", "😂", "😍", "😎", "😭",
-                "😡", "👍", "👎"
+                "😡", "👍", "👎",
+              "👏", "🙌", "🤔", "🤷", "🤦", "💪", "🙏", "💃", "🕺", "👀",
+              "👋", "👌", "✌️", "🤞", "🤟", "🤘", "👊", "✊", "🤛", "🤜",
+              "🖐️", "✋", "🖖", "👆", "👇", "👉", "👈", "🧠", "🦾", "🦿",
+              "🦵", "🦶", "👂", "👃", "🧑‍🦰", "🧑‍🦱", "🧑‍🦳", "🧑‍🦲", "👶", "👧"
               ].map((emoji) => (
                 <button
                   key={emoji}
-                  style={{ fontSize: "12px", padding: "10px", margin: "5px" }}
+                  style={{ fontSize: "15px", padding: "5px", margin: "1px" }}
                   onClick={() => {
                     const input = document.querySelector("input[type='text']") as HTMLInputElement;
                     if (input) {
@@ -97,7 +101,9 @@ export default function App() {
                   {emoji}
                 </button>
               ))}
-              <button
+              
+            </div>
+            <button
                 style={{ fontSize: "15px", width: "100%" }}
                 onClick={() => {
                   const input = document.querySelector("input[type='text']") as HTMLInputElement;
@@ -110,12 +116,11 @@ export default function App() {
               >
                 Send
               </button>
-            </div>
           </div>
         </div>
       </div>
 
-      <button onClick={signOut}>Sign out</button>
+      <button style={{ fontSize: "15px" }} onClick={signOut}>Sign out</button>
     </main>
   );
 }
