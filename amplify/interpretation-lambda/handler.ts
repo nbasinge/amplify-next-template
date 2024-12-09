@@ -18,8 +18,12 @@ export const handler: Schema["getInterpretation"]["functionHandler"] = async (ev
     * use conceise language
     * do not use the emoji in the sentence
     * do not use the word "emoji"
-    * Just explain in simple words, like "I am happy" or "I am sad about the wheater"
-    
+    * do not use the word "interpret"
+    * do not use the word "meaning"
+    * think abstractly, combining all of the emojis into a single consise concept.
+    * Be abstract and creative and make things up and ponder what the emojis could represent. Not just face value.
+    * For instance, a happy emoji, clapping emoji, and cowboy emoji could represent I am happy to receive recognition and applause for my hard work. 
+    * Go all out with your interpretation. Go big. But not too lengthy. Keep it concise.
     `;
     
     const interpretation = await openai.chat.completions.create({
