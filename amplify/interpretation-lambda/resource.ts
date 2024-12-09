@@ -1,6 +1,6 @@
 import { defineFunction } from "@aws-amplify/backend";
     
-export const interpretationLambda = defineFunction({
+export const getInterpretation = defineFunction({
   name: "interpretation-lambda",
   entry: "./handler.ts",
 });

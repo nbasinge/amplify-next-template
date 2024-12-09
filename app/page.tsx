@@ -7,8 +7,6 @@ import "./../app/app.css";
 import { Amplify } from "aws-amplify";
 import outputs from "@/amplify_outputs.json";
 
-// Add the apiKey property to the outputs object
-const apiKey = "your-openai-api-key";
 import "@aws-amplify/ui-react/styles.css";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { fetchAuthSession } from "aws-amplify/auth";
@@ -50,12 +48,18 @@ export default function App() {
   function createTodo() {
     const content = window.prompt("Todo content")!;
     if (content) {
-      fetchInterpretation(content).then((interpretation) => {
-        client.models.Todo.create({
-          content: content,
-          interpretation: JSON.stringify(JSON.parse(new TextDecoder().decode(interpretation.Payload))),
-        });
+      client.models.Todo.create({
+        content: content,
+        interpretation: JSON.stringify(client.queries.getInterpretation({
+          content
+        }))
       });
+      // fetchInterpretation(content).then((interpretation) => {
+      //   client.models.Todo.create({
+      //     content: content,
+      //     interpretation: JSON.stringify(JSON.parse(new TextDecoder().decode(interpretation.Payload))),
+      //   });
+      // });
     }
   }
 

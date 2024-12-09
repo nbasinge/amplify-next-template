@@ -1,13 +1,13 @@
 import { defineBackend } from '@aws-amplify/backend';
 import { auth } from './auth/resource.js';
 import { data } from './data/resource.js';
-import { interpretationLambda } from './interpretation-lambda/resource';
+import { getInterpretation } from './interpretation-lambda/resource';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 
 const backend = defineBackend({
   auth,
   data,
-  interpretationLambda
+  getInterpretation
 });
 
 const statement = new PolicyStatement({
@@ -16,4 +16,4 @@ const statement = new PolicyStatement({
   resources: ["*"]
 })
 
-backend.interpretationLambda.resources.lambda.addToRolePolicy(statement);
+backend.getInterpretation.resources.lambda.addToRolePolicy(statement);

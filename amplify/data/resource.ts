@@ -1,4 +1,5 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
+import { getInterpretation } from "../interpretation-lambda/resource";
 
 /*== STEP 1 ===============================================================
 The section below creates a Todo database table with a "content" field. Try
@@ -7,10 +8,20 @@ specifies that any user authenticated via an API key can "create", "read",
 "update", and "delete" any "Todo" records.
 =========================================================================*/
 const schema = a.schema({
+  getInterpretation: a
+  .query()
+  .arguments({
+    content: a.string()
+  })
+  .returns(a.string())
+  .handler(a.handler.function(getInterpretation))
+  .authorization((allow) => [allow.publicApiKey()]),
+
   Todo: a
     .model({
       content: a.string(),
-      interpretation: a.string()
+      interpretation: a.string(),
+      isDone: a.boolean(),
     })
     .authorization((allow) => [allow.publicApiKey()]),
 });
