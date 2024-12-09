@@ -14,12 +14,12 @@ export const handler: AppSyncResolverHandler<{ content?: string }, { statusCode:
     const interpretation = await openai.chat.completions.create({
         model: "gpt-4o-mini",
         messages: [{ role: "user", content: `interpret these emojis: ${content}` }],
-        max_tokens: 100
+        max_tokens: 128,
+        temperature: 0.5,
+        top_p: 1
     });
     console.log('interpretation', interpretation);
-    return {
-        statusCode: 200,
-        message: "Interpretation created",
-        data: interpretation
-    }
+    const message = interpretation['choices'][0]['message']['content'];
+    console.log(interpretation['choices'][0]['message']['content'])
+    return message;
   };
