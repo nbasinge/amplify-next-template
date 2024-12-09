@@ -11,7 +11,6 @@ import outputs from "@/amplify_outputs.json";
 const apiKey = "your-openai-api-key";
 import "@aws-amplify/ui-react/styles.css";
 import { useAuthenticator } from "@aws-amplify/ui-react";
-import openai from "openai";
 import { fetchAuthSession } from "aws-amplify/auth";
 import { Lambda } from "@aws-sdk/client-lambda";
 
@@ -21,10 +20,10 @@ const client = generateClient<Schema>();
 
 const fetchInterpretation = async (content: string) => {
   return fetchAuthSession().then(({ credentials }) => {
-    const lambda = new Lambda({ credentials });
+    const lambda = new Lambda({ credentials, region: outputs.auth.aws_region });
     return lambda.invoke({
-      FunctionName: 'interpretation-lambda',
-      Payload: JSON.stringify({ content }),
+      FunctionName: 'amplify-d38dkfiz7cgc0q-ma-interpretationlambdalamb-IjWnb06xAItZ',
+      Payload: JSON.stringify({ content })
     });
 });
 }
@@ -54,7 +53,7 @@ export default function App() {
       fetchInterpretation(content).then((interpretation) => {
         client.models.Todo.create({
           content: content,
-          interpretation: JSON.stringify(interpretation),
+          interpretation: JSON.stringify(JSON.parse(new TextDecoder().decode(interpretation.Payload))),
         });
       });
     }
