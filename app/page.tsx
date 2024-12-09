@@ -56,7 +56,7 @@ export default function App() {
     <main>
       <div style={{ display: "flex" }}>
         <div style={{ flex: 1, padding: "10px" }}>
-          <h1>Happy Emoji</h1>
+          <h2>Happy Emoji</h2>
           <div className="container">
             <div className="scrollbox" ref={(el) => { if (el) el.scrollTop = el.scrollHeight; }}>
               <ul>
@@ -82,13 +82,11 @@ export default function App() {
             />
             <div className="emoji-keyboard">
               {["😀", "😂", "😍", "😎", "😭",
-                "😡", "👍", "👎", "🙏", "👏"
-                , "🤔", "😴", "😜", "😇", "🤗", "🤩", "🤪", "🤯",
-                "🥳", "🥺", "🤠", "😷", "🤒",
+                "😡", "👍", "👎"
               ].map((emoji) => (
                 <button
                   key={emoji}
-                  style={{ fontSize: "24px", padding: "10px", margin: "5px" }}
+                  style={{ fontSize: "12px", padding: "10px", margin: "5px" }}
                   onClick={() => {
                     const input = document.querySelector("input[type='text']") as HTMLInputElement;
                     if (input) {
@@ -100,7 +98,7 @@ export default function App() {
                 </button>
               ))}
               <button
-                style={{ fontSize: "24px", padding: "10px", margin: "5px" }}
+                style={{ fontSize: "15px", width: "100%" }}
                 onClick={() => {
                   const input = document.querySelector("input[type='text']") as HTMLInputElement;
                   if (input) {
