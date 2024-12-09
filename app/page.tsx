@@ -37,12 +37,17 @@ export default function App() {
 
   async function createTodo() {
     const content = window.prompt("Todo content")!;
+    const emojiRegex = /(\p{Emoji_Presentation}|\p{Emoji}\uFE0F)/gu;
+    if (!emojiRegex.test(content)) {
+      alert("Only emojis are allowed!");1
+      return;
+    }
     if (content) {
-      const interpretation = JSON.stringify(await client.queries.getInterpretation({ content }));
+      const interpretation = JSON.stringify(await client.queries.getInterpretation({ content })) || JSON.stringify({ data: 'unknown interpretation' }); 
       console.log('interpretation', interpretation);
       client.models.Todo.create({
         content: content,
-        interpretation
+        interpretation: JSON.stringify(JSON.parse(interpretation)!.data)
       });
     }
   }
