@@ -69,11 +69,15 @@ export default function App() {
         <div style={{ flex: 1, padding: "10px" }}>
           <h1>Happy Emoji</h1>
           <button onClick={createTodo}>+ new</button>
+          <div className="container">
+          <div className="scrollbox">
           <ul>
             {todos.map((todo) => (
               <li key={todo.id} onClick={() => deleteTodo(todo.id)}>{`${todo.content} (${todo.interpretation || 'interpretation pending...'})`}</li>
             ))}
           </ul>
+          </div>
+          </div>
         </div>
       </div>
       
