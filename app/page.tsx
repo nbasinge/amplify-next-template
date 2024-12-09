@@ -16,16 +16,6 @@ Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
 
-const fetchInterpretation = async (content: string) => {
-  return fetchAuthSession().then(({ credentials }) => {
-    const lambda = new Lambda({ credentials, region: outputs.auth.aws_region });
-    return lambda.invoke({
-      FunctionName: 'amplify-d38dkfiz7cgc0q-ma-interpretationlambdalamb-IjWnb06xAItZ',
-      Payload: JSON.stringify({ content })
-    });
-});
-}
-
 export default function App() {
   const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
   const { signOut } = useAuthenticator();
@@ -45,21 +35,15 @@ export default function App() {
     listTodos();
   }, []);
 
-  function createTodo() {
+  async function createTodo() {
     const content = window.prompt("Todo content")!;
     if (content) {
+      const interpretation = JSON.stringify(await client.queries.getInterpretation({ content }));
+      console.log('interpretation', interpretation);
       client.models.Todo.create({
         content: content,
-        interpretation: JSON.stringify(client.queries.getInterpretation({
-          content
-        }))
+        interpretation
       });
-      // fetchInterpretation(content).then((interpretation) => {
-      //   client.models.Todo.create({
-      //     content: content,
-      //     interpretation: JSON.stringify(JSON.parse(new TextDecoder().decode(interpretation.Payload))),
-      //   });
-      // });
     }
   }
 
