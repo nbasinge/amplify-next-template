@@ -38,16 +38,20 @@ export default function App() {
   async function createTodo(content: string) {
     // const content = window.prompt("Todo content")!;
     const emojiRegex = /(\p{Emoji_Presentation}|\p{Emoji}\uFE0F)/gu;
+    let query: string = content;
+    let isConvertText = false;
     if (!emojiRegex.test(content)) {
-      alert("Only emojis are allowed!"); 1
-      return;
+      query = "turn this text into emojis: " + content;
+      isConvertText = true;
     }
-    if (content) {
-      const interpretation = JSON.stringify(await client.queries.getInterpretation({ content })) || JSON.stringify({ data: 'unknown interpretation' });
+    if (query) {
+      const interpretation = JSON.stringify(await client.queries.getInterpretation({ content: query})) || JSON.stringify({ data: 'unknown interpretation' });
       console.log('interpretation', interpretation);
+      let interpStr = JSON.parse(interpretation)!.data;
+      if(isConvertText) interpStr = interpStr.match(emojiRegex).join('')
       client.models.Todo.create({
-        content: content,
-        interpretation: JSON.stringify(JSON.parse(interpretation)!.data)
+        content: isConvertText ? '<text input>' : content,
+        interpretation: JSON.stringify(interpStr)
       });
     }
   }
