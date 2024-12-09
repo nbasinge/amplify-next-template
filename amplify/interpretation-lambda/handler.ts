@@ -8,7 +8,7 @@ const apiKey = await ssmClient.send(new GetParameterCommand({ Name: "openai-api-
     .then((data: any) => data.Parameter.Value);
 const openai = new OpenAI({ apiKey });
 
-export const handler: AppSyncResolverHandler<{ content?: string }, { statusCode: number; message: string; data: any } | null> = async (event) => {
+export const handler: AppSyncResolverHandler<{ content: string }, string> = async (event) => {
     console.log("event", event);
     const content = event.arguments.content;
     const interpretation = await openai.chat.completions.create({
@@ -19,7 +19,7 @@ export const handler: AppSyncResolverHandler<{ content?: string }, { statusCode:
         top_p: 1
     });
     console.log('interpretation', interpretation);
-    const message = interpretation['choices'][0]['message']['content'];
+    const message = interpretation['choices'][0]['message']['content'] || 'unknown interpretation';
     console.log(interpretation['choices'][0]['message']['content'])
     return message;
   };
