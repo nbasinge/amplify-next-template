@@ -50,8 +50,8 @@ export default function App() {
       let interpStr = JSON.parse(interpretation)!.data;
       if(isConvertText) interpStr = interpStr.match(emojiRegex).join('')
       client.models.Todo.create({
-        content: isConvertText ? '<text input>' : content,
-        interpretation: JSON.stringify(interpStr)
+        content: isConvertText ? '' : content,
+        interpretation: interpStr
       });
     }
   }
@@ -65,7 +65,7 @@ export default function App() {
             <div className="scrollbox" ref={(el) => { if (el) el.scrollTop = el.scrollHeight; }}>
               <ul>
                 {todos.map((todo) => (
-                  <li key={todo.id} onClick={() => deleteTodo(todo.id)}>{`${todo.content} (${todo.interpretation || 'interpretation pending...'})`}</li>
+                  <li key={todo.id} onClick={() => deleteTodo(todo.id)}>{`${todo.content} ${todo.interpretation || 'interpretation pending...'}`}</li>
                 ))}
               </ul>
             </div>
