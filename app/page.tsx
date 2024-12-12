@@ -73,7 +73,7 @@ export default function App() {
           <div className="container">
             <input
               type="text"
-              placeholder="Type your emoji here"
+              placeholder="Type here"
               style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
