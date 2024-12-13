@@ -45,8 +45,6 @@ export default function App() {
     tooltip.style.color = "white";
     tooltip.style.padding = "5px";
     tooltip.style.borderRadius = "5px";
-    // tooltip.style.top = `${window.scrollY + 10}px`;
-    // tooltip.style.left = `${window.scrollX + 10}px`;
     document.body.appendChild(tooltip);
    
     setTimeout(() => {
@@ -94,6 +92,7 @@ export default function App() {
                       <div>{`${todo.content} ${todo.interpretation || 'interpretation pending...'}`}</div>
                       <div className="deleteTodo">
                         <button 
+                          style={{backgroundColor: 'blue'}}
                           onClick={(e) => {
                             e.stopPropagation();
                             deleteTodo(todo.id);
