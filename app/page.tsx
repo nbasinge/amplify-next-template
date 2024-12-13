@@ -30,9 +30,28 @@ export default function App() {
     client.models.Todo.delete({ id })
   }
 
-  function copyToClipboard(text: string) {
+  function copyToClipboard(event: any, text: string) {
+    const target = event.currentTarget;
+    const rect = target.getBoundingClientRect();
+    const tooltip = document.createElement("div");
+    tooltip.style.top = `${rect.top + window.scrollY - tooltip.offsetHeight}px`;
+    tooltip.style.left = `${rect.left + window.scrollX}px`;
     console.log('copying to clipboard', text);
     navigator.clipboard.writeText(text);
+    
+    tooltip.innerText = "Copied!";
+    tooltip.style.position = "absolute";
+    tooltip.style.backgroundColor = "blue";
+    tooltip.style.color = "white";
+    tooltip.style.padding = "5px";
+    tooltip.style.borderRadius = "5px";
+    // tooltip.style.top = `${window.scrollY + 10}px`;
+    // tooltip.style.left = `${window.scrollX + 10}px`;
+    document.body.appendChild(tooltip);
+   
+    setTimeout(() => {
+      document.body.removeChild(tooltip);
+    }, 700);
   }
 
 
@@ -70,7 +89,7 @@ export default function App() {
             <div style={{ width: "100vw", height: "55vh" }} className="scrollbox" ref={(el) => { if (el) el.scrollTop = el.scrollHeight; }}>
               <ul>
                 {todos.map((todo) => (
-                  <li key={todo.id} onClick={() => copyToClipboard(todo.interpretation!)}>
+                  <li key={todo.id} onClick={(x) => copyToClipboard(x, todo.interpretation!)}>
                     <div style={{display: 'flex'}} >
                       <div>{`${todo.content} ${todo.interpretation || 'interpretation pending...'}`}</div>
                       <div className="deleteTodo">
