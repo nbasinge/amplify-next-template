@@ -98,7 +98,7 @@ body {
   
   @media screen and (max-width: 600px) {
     .scrollbox {
-        height: 380px;
+        height: 150px;
     }
   }
   

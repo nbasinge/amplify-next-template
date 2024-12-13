@@ -60,9 +60,9 @@ export default function App() {
     <main>
       <div style={{ display: "flex" }}>
         <div style={{ flex: 1, padding: "10px" }}>
-          <h1>Happy Emoji</h1>
+          <h1>Happy Em😊ji</h1>
           <div className="container">
-            <div className="scrollbox" ref={(el) => { if (el) el.scrollTop = el.scrollHeight; }}>
+            <div style={{ width: "100vw", height: "55vh" }} className="scrollbox" ref={(el) => { if (el) el.scrollTop = el.scrollHeight; }}>
               <ul>
                 {todos.map((todo) => (
                   <li key={todo.id} onClick={() => deleteTodo(todo.id)}>{`${todo.content} ${todo.interpretation || 'interpretation pending...'}`}</li>
@@ -73,7 +73,7 @@ export default function App() {
           <div className="container">
             <input
               type="text"
-              placeholder="Type here"
+              placeholder="Type here to translate your text to emoji"
               style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
@@ -84,46 +84,6 @@ export default function App() {
                 }
               }}
             />
-            <div className="emoji-keyboard" style={{"overflowY": 'auto', border: "1px solid #ccc", height: "50px", margin: '15px'}}>
-                {[
-                "😀", "😂", "😍", "😎", "😭",
-                "😡", "👍", "👎", "👏", "🙌",
-                "🤔", "🤷", "🤦", "💪", "🙏",
-                "💃", "🕺", "👀", "👋", "👌",
-                "✌️", "🤞", "🤟", "🤘", "👊",
-                "✊", "🤛", "🤜", "🖐️", "✋",
-                "🖖", "👆", "👇", "👉", "👈",
-                "🧠", "🦾", "🦿", "🦵", "🦶",
-                "👂", "👃", "🧑‍🦰", "🧑‍🦱", "🧑‍🦳",
-                "🧑‍🦲", "👶", "👧", "🦸", "🦹",
-                "🧙", "🧚", "🧛", "🧜", "🧝",
-                "🌟", "🌈", "🔥", "💧", "🌊",
-                "🍎", "🍕", "🍔", "🍟", "🍣",
-                "🍦", "🍩", "🍪", "🍫", "🍿",
-                    , "🍭", "🍬", "🍯", "🍵",
-                "🍺", "🍻", "🍷", "🍸", "🍹",
-                "🍾", "🥂", "🥃", "🥤", "🥢",
-                    , "🥧", "🥨", "🥪", "🥙",
-                "🥗", "🥘", "🥓", "🥚", "🥛",
-                "🥜", "🥝", "🥥", "🥑", "🥒",
-                "🥬", "🥦", "🥔", "🥕", "🥖",
-                "🥐", "🥯", "🥞", "🥠", "🥡",
-                ].map((emoji) => (
-                <button
-                  key={emoji}
-                  style={{ fontSize: "15px", padding: "5px", margin: "1px" }}
-                  onClick={() => {
-                  const input = document.querySelector("input[type='text']") as HTMLInputElement;
-                  if (input) {
-                  input.value += emoji;
-                  }
-                  }}
-                >
-                  {emoji}
-                </button>
-                ))}
-              
-            </div>
             <button
                 style={{ fontSize: "15px", width: "100%" }}
                 onClick={() => {
