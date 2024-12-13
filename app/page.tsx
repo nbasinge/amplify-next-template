@@ -30,6 +30,11 @@ export default function App() {
     client.models.Todo.delete({ id })
   }
 
+  function copyToClipboard(text: string) {
+    console.log('copying to clipboard', text);
+    navigator.clipboard.writeText(text);
+  }
+
 
   useEffect(() => {
     listTodos();
@@ -45,10 +50,10 @@ export default function App() {
       isConvertText = true;
     }
     if (query) {
-      const interpretation = JSON.stringify(await client.queries.getInterpretation({ content: query})) || JSON.stringify({ data: 'unknown interpretation' });
+      const interpretation = JSON.stringify(await client.queries.getInterpretation({ content: query })) || JSON.stringify({ data: 'unknown interpretation' });
       console.log('interpretation', interpretation);
       let interpStr = JSON.parse(interpretation)!.data;
-      if(isConvertText) interpStr = interpStr.match(emojiRegex).join('')
+      if (isConvertText) interpStr = interpStr.match(emojiRegex).join('')
       client.models.Todo.create({
         content: isConvertText ? '' : content,
         interpretation: interpStr
@@ -60,12 +65,23 @@ export default function App() {
     <main>
       <div style={{ display: "flex" }}>
         <div style={{ flex: 1, padding: "10px" }}>
-          <h1>Happy Em😊ji</h1>
+          <h1 style={{textAlign:'center'}}>Happy Em😊ji</h1>
           <div className="container">
             <div style={{ width: "100vw", height: "55vh" }} className="scrollbox" ref={(el) => { if (el) el.scrollTop = el.scrollHeight; }}>
               <ul>
                 {todos.map((todo) => (
-                  <li key={todo.id} onClick={() => deleteTodo(todo.id)}>{`${todo.content} ${todo.interpretation || 'interpretation pending...'}`}</li>
+                  <li key={todo.id} onClick={() => copyToClipboard(todo.interpretation!)}>
+                    <div style={{display: 'flex'}} >
+                      <div>{`${todo.content} ${todo.interpretation || 'interpretation pending...'}`}</div>
+                      <div className="deleteTodo">
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            deleteTodo(todo.id);
+                          }}>X</button>
+                      </div>
+                    </div>
+                  </li>
                 ))}
               </ul>
             </div>
@@ -85,18 +101,18 @@ export default function App() {
               }}
             />
             <button
-                style={{ fontSize: "15px", width: "100%" }}
-                onClick={() => {
-                  const input = document.querySelector("input[type='text']") as HTMLInputElement;
-                  if (input) {
-                    const content = input.value;
-                    createTodo(content);
-                    input.value = ""; // Clear the input
-                  }
-                }}
-              >
-                Send
-              </button>
+              style={{ fontSize: "15px", width: "100%" }}
+              onClick={() => {
+                const input = document.querySelector("input[type='text']") as HTMLInputElement;
+                if (input) {
+                  const content = input.value;
+                  createTodo(content);
+                  input.value = ""; // Clear the input
+                }
+              }}
+            >
+              Send
+            </button>
           </div>
         </div>
       </div>
