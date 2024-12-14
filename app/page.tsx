@@ -18,6 +18,7 @@ const client = generateClient<Schema>();
 
 export default function App() {
   const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const { signOut } = useAuthenticator();
 
   function listTodos() {
@@ -38,15 +39,15 @@ export default function App() {
     tooltip.style.left = `${rect.left + window.scrollX}px`;
     console.log('copying to clipboard', text);
     navigator.clipboard.writeText(text);
-    
+
     tooltip.innerText = "Copied!";
     tooltip.style.position = "absolute";
-    tooltip.style.backgroundColor = "blue";
+    tooltip.style.backgroundColor = "purple";
     tooltip.style.color = "white";
     tooltip.style.padding = "5px";
     tooltip.style.borderRadius = "5px";
     document.body.appendChild(tooltip);
-   
+
     setTimeout(() => {
       document.body.removeChild(tooltip);
     }, 700);
@@ -82,17 +83,29 @@ export default function App() {
     <main>
       <div style={{ display: "flex" }}>
         <div style={{ flex: 1, padding: "10px" }}>
-          <h1 style={{textAlign:'center'}}>Happy Em😊ji</h1>
+          <div style={{ display: 'flex' }}>
+            <div><h1 style={{ alignItems: 'center', color: 'white' }}>Happy Em😊ji</h1></div>
+            <div className="flushRight">
+                <div className="dropdown">
+                <button style={{ fontSize: "20px", margin: "10px", backgroundColor: "purple" }} onClick={() => setDropdownOpen(!dropdownOpen)}>☰</button>
+                {dropdownOpen && (
+                  <div className="dropdown-content">
+                  <button style={{ fontSize: "13px", position: "absolute" }} onClick={signOut}>Sign out</button>
+                  </div>
+                )}
+                </div>
+            </div>
+          </div>
           <div className="container">
             <div style={{ width: "100vw", height: "55vh" }} className="scrollbox" ref={(el) => { if (el) el.scrollTop = el.scrollHeight; }}>
               <ul>
                 {todos.map((todo) => (
                   <li key={todo.id} onClick={(x) => copyToClipboard(x, todo.interpretation!)}>
-                    <div style={{display: 'flex'}} >
+                    <div style={{ display: 'flex' }} >
                       <div>{`${todo.content} ${todo.interpretation || 'interpretation pending...'}`}</div>
                       <div className="deleteTodo">
-                        <button 
-                          style={{backgroundColor: 'blue'}}
+                        <button
+                          style={{ backgroundColor: 'purple' }}
                           onClick={(e) => {
                             e.stopPropagation();
                             deleteTodo(todo.id);
@@ -119,7 +132,7 @@ export default function App() {
               }}
             />
             <button
-              style={{ fontSize: "15px", width: "100%" }}
+              style={{ fontSize: "15px", width: "100%", backgroundColor: "purple" }}
               onClick={() => {
                 const input = document.querySelector("input[type='text']") as HTMLInputElement;
                 if (input) {
@@ -134,8 +147,6 @@ export default function App() {
           </div>
         </div>
       </div>
-
-      <button style={{ fontSize: "15px" }} onClick={signOut}>Sign out</button>
     </main>
   );
 }

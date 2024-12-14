@@ -112,3 +112,7 @@ body {
   .deleteTodo {
     margin-left: auto;
   }
+
+  .flushRight {
+    margin-left: auto;
+  }
