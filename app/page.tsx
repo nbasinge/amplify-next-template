@@ -59,21 +59,25 @@ export default function App() {
   }, []);
 
   async function createTodo(content: string) {
-    // const content = window.prompt("Todo content")!;
     const emojiRegex = /(\p{Emoji_Presentation}|\p{Emoji}\uFE0F)/gu;
     let query: string = content;
-    let isConvertText = false;
+
+    let promptType = PromptType.EXPLAIN_EMOJI;
     if (!emojiRegex.test(content)) {
-      query = "turn this text into emojis: " + content;
-      isConvertText = true;
+      promptType = PromptType.TO_EMOJIS;
     }
+
     if (query) {
       const interpretation = JSON.stringify(await client.queries.getInterpretation({ content: JSON.stringify({query: query, promptType: PromptType.TO_EMOJIS})})) || JSON.stringify({ data: 'unknown interpretation' });
       console.log('interpretation', interpretation);
       let interpStr = JSON.parse(interpretation)!.data;
-      if (isConvertText) interpStr = interpStr.match(emojiRegex).join('')
+      if (promptType == PromptType.TO_EMOJIS){
+        interpStr = interpStr.match(emojiRegex).join('')
+        // don't show query if text
+        query = ''
+      }
       client.models.Todo.create({
-        content: isConvertText ? '' : content,
+        content: query,
         interpretation: interpStr
       });
     }

@@ -5,7 +5,7 @@ export const enum PromptType {
 
 function emojiGenPrompt(content: string){
     let prompt = `
-    interpret these emojis: ${content}
+    turn this text into emojis: ${content}
     `;
     return prompt;
 }
