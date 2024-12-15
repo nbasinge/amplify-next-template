@@ -2,6 +2,7 @@ import OpenAI from "openai";
 import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import type { Schema } from "../data/resource"
 import type { AppSyncResolverHandler } from "aws-lambda";
+import { genPrompt } from "./prompts";
 
 const ssmClient = new SSMClient({});
 const apiKey = await ssmClient.send(new GetParameterCommand({ Name: "openai-api-key", WithDecryption: true }))
@@ -11,27 +12,9 @@ const openai = new OpenAI({ apiKey });
 export const handler: Schema["getInterpretation"]["functionHandler"] = async (event: any) => {
     console.log("event", event);
     const content = event.arguments.content;
-
-    let prompt = content;
-    let isEmojis = false;
-    if (!content.startsWith("turn this text into emojis: ")) {
-        isEmojis = true
-        prompt = `
-        
-        interpret these emojis: ${content}
-        
-        * use conceise language
-        * do not use the emoji in the sentence
-        * do not use the word "emoji"
-        * do not use the word "interpret"
-        * do not use the word "meaning"
-        * think abstractly, combining all of the emojis into a single consise concept.
-        * Be abstract and creative and make things up and ponder what the emojis could represent. Not just face value.
-        * For instance, a happy emoji, clapping emoji, and cowboy emoji could represent I am happy to receive recognition and applause for my hard work. 
-        * Go all out with your interpretation. But not too lengthy. Keep it concise. 10 words at most.
-        `;
-    }
-
+    let args = JSON.parse(content)
+    let prompt = genPrompt(args["query"], args["promptType"])
+    
     const interpretation = await openai.chat.completions.create({
         model: "gpt-4o-mini",
         messages: [{ role: "user", content: prompt }],

@@ -11,6 +11,8 @@ import "@aws-amplify/ui-react/styles.css";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { fetchAuthSession } from "aws-amplify/auth";
 import { Lambda } from "@aws-sdk/client-lambda";
+import { PromptType } from "../amplify/interpretation-lambda/prompts";
+
 
 Amplify.configure(outputs);
 
@@ -68,7 +70,7 @@ export default function App() {
       isConvertText = true;
     }
     if (query) {
-      const interpretation = JSON.stringify(await client.queries.getInterpretation({ content: query })) || JSON.stringify({ data: 'unknown interpretation' });
+      const interpretation = JSON.stringify(await client.queries.getInterpretation({ content: JSON.stringify({query: query, promptType: PromptType.TO_EMOJIS})})) || JSON.stringify({ data: 'unknown interpretation' });
       console.log('interpretation', interpretation);
       let interpStr = JSON.parse(interpretation)!.data;
       if (isConvertText) interpStr = interpStr.match(emojiRegex).join('')
