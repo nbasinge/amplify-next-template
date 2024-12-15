@@ -1,7 +1,6 @@
 import OpenAI from "openai";
 import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import type { Schema } from "../data/resource"
-import type { AppSyncResolverHandler } from "aws-lambda";
 import { genPrompt } from "./prompts";
 
 const ssmClient = new SSMClient({});

@@ -9,8 +9,6 @@ import outputs from "@/amplify_outputs.json";
 
 import "@aws-amplify/ui-react/styles.css";
 import { useAuthenticator } from "@aws-amplify/ui-react";
-import { fetchAuthSession } from "aws-amplify/auth";
-import { Lambda } from "@aws-sdk/client-lambda";
 import { PromptType } from "../amplify/interpretation-lambda/prompts";
 
 
